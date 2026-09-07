@@ -3,7 +3,10 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { AuthProvider, useAuth } from '@/lib/auth';
-import { AuthGuard } from '@/components/AuthGuard';
+//import { AuthGuard } from '@/components/AuthGuard';
+
+import AuthGuard from '@/components/AuthGuard';
+
 import Navbar from '@/components/Navbar';
 import IngredientRow from '@/components/IngredientRow';
 import { ToastProvider, useToast } from '@/components/Toast';
@@ -14,7 +17,7 @@ function EditarContent({ id }) {
   const { user, profile } = useAuth();
   const router = useRouter();
   const { showToast } = useToast();
-  
+
   const [nombre, setNombre] = useState('');
   const [notas, setNotas] = useState('');
   const [ingredientes, setIngredientes] = useState([]);
@@ -34,7 +37,7 @@ function EditarContent({ id }) {
         .eq('id', id)
         .single();
       if (pError) throw pError;
-      
+
       const { data: iData, error: iError } = await supabase
         .from('formula_ingredientes')
         .select('*')
@@ -43,10 +46,10 @@ function EditarContent({ id }) {
 
       setNombre(pData.nombre);
       setNotas(pData.notas || '');
-      
+
       const ings = iData.map(i => ({ ...i, id: i.id || Date.now() + Math.random() }));
       setIngredientes(ings.length > 0 ? ings : [{ id: Date.now(), tinta_base: '', cantidad: '', unidad: 'g' }]);
-      
+
       setOldData({ ...pData, ingredientes: iData });
     } catch (error) {
       console.error(error);
@@ -77,7 +80,7 @@ function EditarContent({ id }) {
       showToast('Añade al menos un ingrediente', 'error');
       return;
     }
-    
+
     for (const ing of ingredientes) {
       if (!ing.tinta_base || !ing.cantidad || Number(ing.cantidad) <= 0 || !ing.unidad) {
         showToast('Completa todos los campos de los ingredientes', 'error');
@@ -91,7 +94,7 @@ function EditarContent({ id }) {
         .from('pantones')
         .update({ nombre, notas, updated_at: new Date().toISOString() })
         .eq('id', id);
-        
+
       if (pantoneError) throw pantoneError;
 
       const { error: delError } = await supabase
@@ -207,7 +210,7 @@ function EditarContent({ id }) {
 
 export default function Page({ params }) {
   const { id } = use(params);
-  
+
   return (
     <AuthProvider>
       <ToastProvider>

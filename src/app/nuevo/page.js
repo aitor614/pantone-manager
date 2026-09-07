@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { AuthProvider, useAuth } from '@/lib/auth';
-import { AuthGuard } from '@/components/AuthGuard';
+//import { AuthGuard } from '@/components/AuthGuard';
+
+import AuthGuard from '@/components/AuthGuard';
+
 import Navbar from '@/components/Navbar';
 import IngredientRow from '@/components/IngredientRow';
 import { ToastProvider, useToast } from '@/components/Toast';
@@ -14,7 +17,7 @@ function NuevoContent() {
   const { user, profile } = useAuth();
   const router = useRouter();
   const { showToast } = useToast();
-  
+
   const [nombre, setNombre] = useState('');
   const [notas, setNotas] = useState('');
   const [ingredientes, setIngredientes] = useState([
@@ -43,7 +46,7 @@ function NuevoContent() {
       showToast('Añade al menos un ingrediente', 'error');
       return;
     }
-    
+
     for (const ing of ingredientes) {
       if (!ing.tinta_base || !ing.cantidad || Number(ing.cantidad) <= 0 || !ing.unidad) {
         showToast('Completa todos los campos de los ingredientes', 'error');
@@ -58,7 +61,7 @@ function NuevoContent() {
         .insert([{ nombre, notas, created_by: user.id }])
         .select()
         .single();
-        
+
       if (pantoneError) throw pantoneError;
 
       const formula = ingredientes.map(({ id, ...rest }) => ({

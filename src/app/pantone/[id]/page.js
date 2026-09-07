@@ -3,7 +3,10 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { AuthProvider, useAuth, getDisplayUsername } from '@/lib/auth';
-import { AuthGuard } from '@/components/AuthGuard';
+//import { AuthGuard } from '@/components/AuthGuard';
+
+import AuthGuard from '@/components/AuthGuard';
+
 import Navbar from '@/components/Navbar';
 import FormulaTable from '@/components/FormulaTable';
 import ConfirmDialog from '@/components/ConfirmDialog';
@@ -15,7 +18,7 @@ function PantoneDetailContent({ id }) {
   const { user, profile } = useAuth();
   const router = useRouter();
   const { showToast } = useToast();
-  
+
   const [pantone, setPantone] = useState(null);
   const [ingredientes, setIngredientes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -131,7 +134,7 @@ function PantoneDetailContent({ id }) {
           </button>
         </div>
       </div>
-      
+
       {showConfirm && (
         <ConfirmDialog
           title="¿Eliminar Pantone?"
@@ -140,7 +143,7 @@ function PantoneDetailContent({ id }) {
           onCancel={() => setShowConfirm(false)}
         />
       )}
-      
+
       <Navbar />
     </div>
   );
@@ -148,7 +151,7 @@ function PantoneDetailContent({ id }) {
 
 export default function Page({ params }) {
   const { id } = use(params);
-  
+
   return (
     <AuthProvider>
       <ToastProvider>

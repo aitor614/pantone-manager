@@ -2,7 +2,7 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { AuthProvider, useAuth } from '@/lib/auth';
+import { AuthProvider, useAuth, getDisplayUsername } from '@/lib/auth';
 import { AuthGuard } from '@/components/AuthGuard';
 import Navbar from '@/components/Navbar';
 import FormulaTable from '@/components/FormulaTable';
@@ -106,7 +106,7 @@ function PantoneDetailContent({ id }) {
             <h1 className="text-3xl font-bold text-slate-100">{pantone.nombre}</h1>
             <p className="text-slate-400 text-sm mt-1">
               Creado el {new Date(pantone.created_at).toLocaleDateString()}
-              {creator && ` por ${creator.display_name || creator.email}`}
+              {creator && ` por ${creator.display_name || getDisplayUsername(creator.email)}`}
             </p>
           </div>
         </div>

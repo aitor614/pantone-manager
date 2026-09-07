@@ -96,3 +96,36 @@ export function useAuth() {
   }
   return context;
 }
+
+export const DEFAULT_EMAIL_DOMAIN = 'taller.local';
+
+/**
+ * Normaliza un nombre de usuario o email.
+ * Si el usuario introduce solo "pepe", devuelve "pepe@taller.local".
+ * Si ya incluye "@" (ej. "admin@gmail.com"), lo respeta.
+ */
+export function formatAuthEmail(input) {
+  if (!input) return '';
+  const trimmed = input.trim().toLowerCase();
+  if (trimmed.includes('@')) {
+    return trimmed;
+  }
+  const cleanUsername = trimmed.replace(/[^a-z0-9._-]/g, '');
+  return `${cleanUsername}@${DEFAULT_EMAIL_DOMAIN}`;
+}
+
+/**
+ * Obtiene el nombre de usuario limpio para mostrar en la interfaz.
+ * Si el email termina en "@taller.local" o "@taller.com", muestra solo "pepe".
+ */
+export function getDisplayUsername(email) {
+  if (!email) return '';
+  const lower = email.toLowerCase();
+  if (lower.endsWith('@taller.local')) {
+    return email.slice(0, -'@taller.local'.length);
+  }
+  if (lower.endsWith('@taller.com')) {
+    return email.slice(0, -'@taller.com'.length);
+  }
+  return email;
+}

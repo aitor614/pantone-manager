@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth';
 
-export default function AuthGuard({ children }) {
+export function AuthGuard({ children }) {
   const { isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
@@ -57,3 +57,5 @@ export function AdminGuard({ children }) {
 
   return <>{children}</>;
 }
+
+export default AuthGuard;

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { AuthProvider } from '@/lib/auth';
+import { AuthProvider, getDisplayUsername } from '@/lib/auth';
 import { AdminGuard } from '@/components/AuthGuard';
 import Navbar from '@/components/Navbar';
 import { ToastProvider } from '@/components/Toast';
@@ -96,7 +96,7 @@ function LogsContent() {
           </select>
           <input
             type="text"
-            placeholder="Buscar por email..."
+            placeholder="Buscar por usuario o email..."
             value={searchEmail}
             onChange={e => setSearchEmail(e.target.value)}
             className="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-violet-500"
@@ -119,7 +119,10 @@ function LogsContent() {
               {logs.map(log => (
                 <tr key={log.id} className="hover:bg-slate-800/30 transition-colors text-sm">
                   <td className="p-4 text-slate-400 whitespace-nowrap">{new Date(log.created_at).toLocaleString()}</td>
-                  <td className="p-4 text-slate-200">{log.user_email}</td>
+                  <td className="p-4">
+                    <span className="text-slate-200 font-medium block">{getDisplayUsername(log.user_email)}</span>
+                    <span className="text-xs text-slate-500 font-mono">{log.user_email}</span>
+                  </td>
                   <td className="p-4">
                     <span className={`px-2 py-1 rounded text-xs font-medium border ${getActionColor(log.action)}`}>
                       {log.action}

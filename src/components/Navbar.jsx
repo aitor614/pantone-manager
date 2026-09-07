@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '@/lib/auth';
+import { useAuth, getDisplayUsername } from '@/lib/auth';
 
 export default function Navbar() {
   const { profile, isAdmin, signOut } = useAuth();
@@ -67,15 +67,23 @@ export default function Navbar() {
             })}
           </div>
 
-          <button
-            onClick={signOut}
-            className="flex flex-col items-center justify-center text-slate-400 hover:text-slate-100 transition-all duration-200 md:flex-row md:space-x-2"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            <span className="text-xs font-medium md:text-sm">Salir</span>
-          </button>
+          <div className="flex items-center space-x-3">
+            {profile && (
+              <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700/50 text-xs text-slate-300">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="font-medium">{profile.display_name || getDisplayUsername(profile.email)}</span>
+              </div>
+            )}
+            <button
+              onClick={signOut}
+              className="flex flex-col items-center justify-center text-slate-400 hover:text-slate-100 transition-all duration-200 md:flex-row md:space-x-2"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span className="text-xs font-medium md:text-sm">Salir</span>
+            </button>
+          </div>
         </div>
       </div>
     </nav>

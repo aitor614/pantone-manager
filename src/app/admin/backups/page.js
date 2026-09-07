@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { AuthProvider, useAuth } from '@/lib/auth';
+import { AuthProvider, useAuth, getDisplayUsername } from '@/lib/auth';
 import { AdminGuard } from '@/components/AuthGuard';
 import Navbar from '@/components/Navbar';
 import { ToastProvider, useToast } from '@/components/Toast';
@@ -129,7 +129,7 @@ function BackupsContent() {
                 <div key={log.id} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
                   <div className="flex flex-col">
                     <span className="text-sm font-medium text-slate-200">{new Date(log.created_at).toLocaleString()}</span>
-                    <span className="text-xs text-slate-400">Por: {log.user_email}</span>
+                    <span className="text-xs text-slate-400">Por: {getDisplayUsername(log.user_email)}</span>
                   </div>
                   <span className="text-blue-400 bg-blue-400/10 border border-blue-400/20 px-2 py-1 rounded text-xs font-medium">
                     BACKUP

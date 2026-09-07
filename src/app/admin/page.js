@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { AuthProvider } from '@/lib/auth';
+import { AuthProvider, getDisplayUsername } from '@/lib/auth';
 import { AdminGuard } from '@/components/AuthGuard';
 import Navbar from '@/components/Navbar';
 import { ToastProvider } from '@/components/Toast';
@@ -82,7 +82,7 @@ function AdminContent() {
               <div key={log.id} className="border-b border-slate-800 last:border-0 pb-4 last:pb-0">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-slate-300 text-sm font-medium">{log.user_email}</span>
+                    <span className="text-slate-300 text-sm font-medium">{getDisplayUsername(log.user_email)}</span>
                     <span className="text-slate-500 text-xs">{new Date(log.created_at).toLocaleString()}</span>
                   </div>
                   <span className={`px-2 py-1 rounded text-xs font-medium border ${getActionColor(log.action)}`}>

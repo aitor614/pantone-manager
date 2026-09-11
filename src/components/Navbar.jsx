@@ -53,16 +53,29 @@ export default function Navbar() {
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`flex flex-col items-center justify-center w-full md:w-auto space-y-1 transition-all duration-200 ${
-                    isActive ? 'text-violet-500' : 'text-slate-400 hover:text-slate-100'
-                  }`}
-                >
-                  {link.icon}
-                  <span className="text-xs font-medium">{link.label}</span>
-                </Link>
+                link.href === '/admin' ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className={`flex flex-col items-center justify-center w-full md:w-auto space-y-1 transition-all duration-200 ${
+                      isActive ? 'text-violet-500' : 'text-slate-400 hover:text-slate-100'
+                    }`}
+                  >
+                    {link.icon}
+                    <span className="text-xs font-medium">{link.label}</span>
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`flex flex-col items-center justify-center w-full md:w-auto space-y-1 transition-all duration-200 ${
+                      isActive ? 'text-violet-500' : 'text-slate-400 hover:text-slate-100'
+                    }`}
+                  >
+                    {link.icon}
+                    <span className="text-xs font-medium">{link.label}</span>
+                  </Link>
+                )
               );
             })}
           </div>

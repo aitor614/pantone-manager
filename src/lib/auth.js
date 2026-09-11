@@ -73,7 +73,7 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
   };
 
-  const isAdmin = profile?.role === 'admin';
+  const isAdmin = profile?.role?.trim().toLowerCase() === 'admin';
   const isAuthenticated = !!user;
 
   const value = {

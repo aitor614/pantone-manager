@@ -43,10 +43,14 @@ function PantoneDetailContent({ id }) {
       const { data: iData, error: iError } = await supabase
         .from('formula_ingredientes')
         .select('*')
-        .eq('pantone_id', id)
-        .order('cantidad', { ascending: false });
+        .eq('pantone_id', id);
       if (iError) throw iError;
-      setIngredientes(iData || []);
+      const sortedIngredientes = [...(iData || [])].sort((first, second) => {
+        const unitOrder = { kg: 0, gr: 1 };
+        const unitDifference = (unitOrder[first.unidad] ?? 2) - (unitOrder[second.unidad] ?? 2);
+        return unitDifference || Number(second.cantidad) - Number(first.cantidad);
+      });
+      setIngredientes(sortedIngredientes);
 
       if (pData.created_by) {
         const { data: uData } = await supabase
@@ -100,47 +104,52 @@ function PantoneDetailContent({ id }) {
 
   return (
     <div className="min-h-screen bg-slate-950 pb-20">
-      <div className="max-w-3xl mx-auto p-4 sm:p-6">
-        <div className="flex items-center mb-6">
-          <Link href="/" className="text-slate-400 hover:text-slate-200 mr-4">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-          </Link>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold text-slate-100">{pantone.nombre}</h1>
-            <p className="text-slate-400 text-sm mt-1">
-              Creado el {new Date(pantone.created_at).toLocaleDateString()}
-              {creator && ` por ${creator.display_name || getDisplayUsername(creator.email)}`}
-            </p>
+      <div className="max-w-6xl mx-auto p-4 sm:p-6 md:pt-24">
+        <div className="grid md:grid-cols-[minmax(220px,1fr)_minmax(0,2fr)] md:gap-12">
+          <div className="flex items-start mb-6 md:sticky md:top-24 md:self-start">
+            <Link href="/" className="text-slate-400 hover:text-slate-200 mr-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            </Link>
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-slate-100">Pantone {pantone.nombre}</h1>
+              <p className="text-slate-400 text-sm mt-1">
+                Creado el {new Date(pantone.created_at).toLocaleDateString()}
+                {creator && ` por ${creator.display_name || getDisplayUsername(creator.email)}`}
+              </p>
+            </div>
           </div>
-        </div>
 
-        {pantone.notas && (
+          <div className="md:col-start-2">
+            {pantone.notas && (
           <div className="bg-slate-900 rounded-xl border border-slate-700/50 p-4 mb-6">
             <h3 className="text-slate-400 text-sm font-medium mb-1">Notas</h3>
             <p className="text-slate-200">{pantone.notas}</p>
           </div>
-        )}
+            )}
 
-        <div className="bg-slate-900 rounded-xl border border-slate-700/50 overflow-hidden mb-6">
-          <FormulaTable ingredientes={ingredientes} />
-        </div>
+            <div className="bg-slate-900 rounded-xl border border-slate-700/50 overflow-hidden mb-6">
+              <FormulaTable ingredientes={ingredientes} />
+            </div>
 
-        <div className="flex gap-4">
-          <Link href={`/pantone/${id}/editar`} className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-100 text-center font-medium py-3 rounded-xl transition-colors border border-slate-700">
-            Editar
-          </Link>
-          <button onClick={() => setShowConfirm(true)} className="flex-1 bg-red-600 hover:bg-red-500 text-white font-medium py-3 rounded-xl transition-colors">
-            Eliminar
-          </button>
+            <div className="flex gap-4">
+              <Link href={`/pantone/${id}/editar`} className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-100 text-center font-medium py-3 rounded-xl transition-colors border border-slate-700">
+                Editar
+              </Link>
+              <button onClick={() => setShowConfirm(true)} className="flex-1 bg-red-600 hover:bg-red-500 text-white font-medium py-3 rounded-xl transition-colors">
+                Eliminar
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       {showConfirm && (
         <ConfirmDialog
+          isOpen={showConfirm}
           title="¿Eliminar Pantone?"
           message={`¿Estás seguro de que deseas eliminar ${pantone.nombre}? Esta acción no se puede deshacer.`}
           onConfirm={handleDelete}
-          onCancel={() => setShowConfirm(false)}
+          onClose={() => setShowConfirm(false)}
         />
       )}
 

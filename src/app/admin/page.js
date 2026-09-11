@@ -52,19 +52,27 @@ function AdminContent() {
       <div className="max-w-4xl mx-auto p-4 sm:p-6">
         <h1 className="text-3xl font-bold text-slate-100 mb-8">Panel de Administración</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Link href="/admin/usuarios" className="bg-slate-900 rounded-xl border border-slate-700/50 p-6 hover:border-violet-500/50 transition-colors">
-            <div className="text-slate-400 text-sm font-medium mb-2">Total Usuarios</div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+          <Link href="/admin/usuarios" className="bg-slate-900 rounded-xl border border-slate-700/50 p-4 sm:p-6 hover:border-violet-500/50 transition-colors">
+            <div className="text-slate-400 text-sm font-medium mb-2">Usuarios</div>
             <div className="text-3xl font-bold text-slate-100">{stats.usuarios}</div>
+            <div className="text-violet-400 text-xs mt-2">Gestionar usuarios</div>
           </Link>
-          <div className="bg-slate-900 rounded-xl border border-slate-700/50 p-6">
-            <div className="text-slate-400 text-sm font-medium mb-2">Total Pantones</div>
+          <div className="bg-slate-900 rounded-xl border border-slate-700/50 p-4 sm:p-6">
+            <div className="text-slate-400 text-sm font-medium mb-2">Pantones</div>
             <div className="text-3xl font-bold text-slate-100">{stats.pantones}</div>
+            <div className="text-slate-500 text-xs mt-2">Total registrados</div>
           </div>
-          <Link href="/admin/backups" className="bg-slate-900 rounded-xl border border-slate-700/50 p-6 hover:border-violet-500/50 transition-colors">
-            <div className="text-slate-400 text-sm font-medium mb-2">Copias de Seguridad</div>
+          <Link href="/admin/backups" className="bg-slate-900 rounded-xl border border-slate-700/50 p-4 sm:p-6 hover:border-violet-500/50 transition-colors">
+            <div className="text-slate-400 text-sm font-medium mb-2">Copias</div>
             <div className="text-slate-100 mt-2 text-sm flex items-center">
-              Gestionar <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              Exportar / importar <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </div>
+          </Link>
+          <Link href="/admin/logs" className="bg-slate-900 rounded-xl border border-slate-700/50 p-4 sm:p-6 hover:border-violet-500/50 transition-colors">
+            <div className="text-slate-400 text-sm font-medium mb-2">Actividad</div>
+            <div className="text-slate-100 mt-2 text-sm flex items-center">
+              Ver registros <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </div>
           </Link>
         </div>

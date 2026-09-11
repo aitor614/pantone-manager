@@ -48,7 +48,7 @@ function EditarContent({ id }) {
       setNotas(pData.notas || '');
 
       const ings = iData.map(i => ({ ...i, id: i.id || Date.now() + Math.random() }));
-      setIngredientes(ings.length > 0 ? ings : [{ id: Date.now(), tinta_base: '', cantidad: '', unidad: 'g' }]);
+      setIngredientes(ings.length > 0 ? ings : [{ id: Date.now(), tinta_base: '', cantidad: '', unidad: 'kg' }]);
 
       setOldData({ ...pData, ingredientes: iData });
     } catch (error) {
@@ -60,7 +60,7 @@ function EditarContent({ id }) {
   };
 
   const addIngredient = () => {
-    setIngredientes([...ingredientes, { id: Date.now(), tinta_base: '', cantidad: '', unidad: 'g' }]);
+    setIngredientes([...ingredientes, { id: Date.now(), tinta_base: '', cantidad: '', unidad: 'kg' }]);
   };
 
   const updateIngredient = (ingId, field, value) => {
@@ -148,7 +148,7 @@ function EditarContent({ id }) {
           <Link href={`/pantone/${id}`} className="text-slate-400 hover:text-slate-200 mr-4">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           </Link>
-          <h1 className="text-2xl font-bold text-slate-100">Editar Pantone</h1>
+          <h1 className="text-2xl font-bold text-slate-100">Editar Pantone {nombre}</h1>
         </div>
 
         <div className="space-y-6">
@@ -180,7 +180,7 @@ function EditarContent({ id }) {
                 <IngredientRow
                   key={ing.id}
                   ingredient={ing}
-                  onChange={(field, val) => updateIngredient(ing.id, field, val)}
+                  onChange={(idx, updated) => setIngredientes(prev => prev.map(i => i.id === ing.id ? updated : i))}
                   onRemove={() => removeIngredient(ing.id)}
                 />
               ))}

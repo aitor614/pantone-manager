@@ -67,6 +67,7 @@ function LogsContent() {
       case 'CREATE': return 'text-green-400 bg-green-400/10 border-green-400/20';
       case 'UPDATE': return 'text-amber-400 bg-amber-400/10 border-amber-400/20';
       case 'DELETE': return 'text-red-400 bg-red-400/10 border-red-400/20';
+      case 'IMPORT': return 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20';
       case 'BACKUP': return 'text-blue-400 bg-blue-400/10 border-blue-400/20';
       default: return 'text-slate-400 bg-slate-400/10 border-slate-400/20';
     }
@@ -92,6 +93,7 @@ function LogsContent() {
             <option value="CREATE">CREATE</option>
             <option value="UPDATE">UPDATE</option>
             <option value="DELETE">DELETE</option>
+            <option value="IMPORT">IMPORT</option>
             <option value="BACKUP">BACKUP</option>
           </select>
           <input

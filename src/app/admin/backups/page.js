@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import { ToastProvider, useToast } from '@/components/Toast';
 import { logAction } from '@/lib/audit';
 import Link from 'next/link';
+import Papa from 'papaparse';
 
 const CSV_HEADERS = ['pantone', 'notas', 'tinta_base', 'cantidad', 'unidad'];
 
@@ -15,37 +16,11 @@ function escapeCsvValue(value) {
 }
 
 function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let value = '';
-  let quoted = false;
-
-  for (let index = 0; index < text.length; index += 1) {
-    const character = text[index];
-    const nextCharacter = text[index + 1];
-
-    if (character === '"' && quoted && nextCharacter === '"') {
-      value += '"';
-      index += 1;
-    } else if (character === '"') {
-      quoted = !quoted;
-    } else if (character === ',' && !quoted) {
-      row.push(value);
-      value = '';
-    } else if ((character === '\n' || character === '\r') && !quoted) {
-      if (character === '\r' && nextCharacter === '\n') index += 1;
-      row.push(value);
-      if (row.some(cell => cell.trim() !== '')) rows.push(row);
-      row = [];
-      value = '';
-    } else {
-      value += character;
-    }
+  const result = Papa.parse(text, { skipEmptyLines: true });
+  if (result.errors.length > 0) {
+    throw new Error('No se pudo leer el CSV. Comprueba el formato del archivo.');
   }
-
-  row.push(value);
-  if (row.some(cell => cell.trim() !== '')) rows.push(row);
-  return rows;
+  return result.data;
 }
 
 function BackupsContent() {
@@ -59,7 +34,7 @@ function BackupsContent() {
     fetchBackupLogs();
   }, []);
 
-  const fetchBackupLogs = async () => {
+  async function fetchBackupLogs() {
     try {
       const { data, error } = await supabase
         .from('audit_logs')
@@ -73,7 +48,7 @@ function BackupsContent() {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   const handleExport = async () => {
     setLoading(true);
@@ -225,7 +200,7 @@ function BackupsContent() {
         supabase,
         userId: user.id,
         userEmail: profile?.email || user.email,
-        action: 'BACKUP',
+        action: 'IMPORT',
         entityType: 'system',
         entityId: null,
         entityName: 'Importación de datos CSV',

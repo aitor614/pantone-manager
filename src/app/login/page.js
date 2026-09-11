@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { formatAuthEmail } from '@/lib/auth';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -49,6 +50,7 @@ export default function LoginPage() {
         throw signInError;
       }
       router.push('/');
+      router.refresh();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -106,6 +108,9 @@ export default function LoginPage() {
           >
             {loading ? 'Cargando...' : 'Entrar'}
           </button>
+          <Link href="/registro" className="block text-center text-violet-400 hover:text-violet-300 text-sm">
+            Crear una cuenta
+          </Link>
         </form>
       </div>
     </div>

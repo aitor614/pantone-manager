@@ -50,16 +50,16 @@ export function AuthProvider({ children }) {
     initializeAuth();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, newSession) => {
+      async (_event, newSession) => {
         setSession(newSession);
         setUser(newSession?.user ?? null);
-        
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
-          await fetchProfile(newSession?.user);
-        } else if (event === 'SIGNED_OUT') {
+
+        if (newSession?.user) {
+          await fetchProfile(newSession.user);
+        } else {
           setProfile(null);
         }
-        
+
         setLoading(false);
       }
     );

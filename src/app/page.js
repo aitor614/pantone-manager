@@ -21,25 +21,26 @@ function HomeContent() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchPantones();
-  }, [searchQuery]);
+    let cancelled = false;
 
-  const fetchPantones = async () => {
-    setLoading(true);
-    try {
-      let query = supabase.from('pantones').select('*').order('nombre');
-      if (searchQuery) {
-        query = query.ilike('nombre', `%${searchQuery}%`);
+    const loadPantones = async () => {
+      setLoading(true);
+      try {
+        let query = supabase.from('pantones').select('*').order('nombre');
+        if (searchQuery) query = query.ilike('nombre', `%${searchQuery}%`);
+        const { data, error } = await query;
+        if (error) throw error;
+        if (!cancelled) setPantones(data || []);
+      } catch (error) {
+        console.error('Error fetching pantones:', error);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      const { data, error } = await query;
-      if (error) throw error;
-      setPantones(data || []);
-    } catch (error) {
-      console.error('Error fetching pantones:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    loadPantones();
+    return () => { cancelled = true; };
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-slate-950 pb-20">

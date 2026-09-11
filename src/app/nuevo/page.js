@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { AuthProvider, useAuth } from '@/lib/auth';
-//import { AuthGuard } from '@/components/AuthGuard';
 
 import AuthGuard from '@/components/AuthGuard';
 
@@ -21,12 +20,12 @@ function NuevoContent() {
   const [nombre, setNombre] = useState('');
   const [notas, setNotas] = useState('');
   const [ingredientes, setIngredientes] = useState([
-    { id: Date.now(), tinta_base: '', cantidad: '', unidad: 'g' }
+    { id: Date.now(), tinta_base: '', cantidad: '', unidad: 'kg' }
   ]);
   const [saving, setSaving] = useState(false);
 
   const addIngredient = () => {
-    setIngredientes([...ingredientes, { id: Date.now(), tinta_base: '', cantidad: '', unidad: 'g' }]);
+    setIngredientes([...ingredientes, { id: Date.now(), tinta_base: '', cantidad: '', unidad: 'kg' }]);
   };
 
   const updateIngredient = (id, field, value) => {
@@ -137,7 +136,7 @@ function NuevoContent() {
                 <IngredientRow
                   key={ing.id}
                   ingredient={ing}
-                  onChange={(field, val) => updateIngredient(ing.id, field, val)}
+                  onChange={(idx, updated) => setIngredientes(prev => prev.map(i => i.id === ing.id ? updated : i))}
                   onRemove={() => removeIngredient(ing.id)}
                 />
               ))}

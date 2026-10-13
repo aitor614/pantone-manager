@@ -1,8 +1,22 @@
 'use client';
 
 const TINTAS = [
-  'Yellow', 'Warm Red', 'Rubine Red', 'Rhodamine Red', 'Purple', 'Violet', 
-  'Blue 072', 'Reflex Blue', 'Process Blue', 'Green', 'Black', 'Laca'
+  'Black',
+  'Cian',
+  'Magenta',
+  'Yellow',
+  '021',
+  'Warm Red',
+  'Rubine Red',
+  'Rhodamine Red',
+  'Purple',
+  'Violet',
+  'Blue 072',
+  'Reflex Blue',
+  'Process Blue',
+  'Green',
+  'Opaque White',
+  'Laca'
 ];
 
 export default function IngredientRow({ ingredient, onChange, onRemove, index }) {

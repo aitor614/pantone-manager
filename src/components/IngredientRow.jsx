@@ -18,9 +18,7 @@ const TINTAS = [
   'Opaque White',
   'Laca',
   '540',
-  '421',
-  '421',
-  '540'
+  '421'
 ];
 
 export default function IngredientRow({ ingredient, onChange, onRemove, index }) {
